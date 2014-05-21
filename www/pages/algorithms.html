@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Web Maps How-To</title><link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure.css"><!--[if lte IE 8]><link rel="stylesheet" href="css/layouts/side-menu-old-ie.css"><![endif]--><!--if gt IE 8--><link rel="stylesheet" href="/css/layouts/side-menu.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/tomorrow-night.min.css"><link rel="stylesheet" href="/css/main.css"><script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script><!--<![endif]--></head><body><div id="layout"><a id="menuLink" href="#menu" class="menu-link"><span></span></a><div id="menu"><div class="pure-menu pure-menu-open"><a href="#" class="pure-menu-heading">CONTENT</a><ul><li><a href="/index.html">Home</a></li><li class="pure-menu-selected"><a href="/pages/algorithms.html">algorithms</a></li><li><a href="/pages/current-position.html">current position</a></li><li><a href="/pages/track-distance.html">track distance</a></li><li><a href="/pages/leaflet-legends.html">leaflet legends</a></li><li><a href="/pages/getting-started.html">getting started</a></li><li><a href="/pages/libraries.html">libraries</a></li><li><a href="/pages/extra-credit.html">extra-credit</a></li></ul></div></div><div id="main"><div class="content"><h1>Algorithms</h1>
+<h2>Calculate distance from a polyline</h2>
+<p>This is very useful in an app with a guidance system. Calculating the current
+position to a polyline ( the guidance line ) is very common. The calculation is,
+like other geolocation calculations, just trigonometry. It requires a few other
+functions, which you can use either the Google Maps Geometry Library, or your
+own. Writing your own might be better if you want to extend and change so I will
+list a few below.</p>
+<p><strong>All functions below have been tested and accuracy is within a meter</strong></p>
+<h3>conversions</h3>
+<p>Since we will often need to convert degrees and radians, we should define some
+conversion functions. We will just go ahead and extend the <code>Number</code> prototype</p>
+<pre><code class="language-javascript">// convert degrees to radians
+Number.prototype.toRad = function(){
+    return this * Math.PI / 180;
+};
+
+// convert radians to degrees
+Number.prototype.toDegrees = function(){
+    return this * 180 / Math.PI;
+};</code></pre>
+<h3>distance to a line</h3>
+<p>This uses the &#39;Haversine&#39; formula to calculate distance between two coordinates</p>
+<pre><code class="language-javascript">// a and b are html5 geolocation coordinates
+// RETURN distance in km
+function getPntDist(a, b){
+
+    // earth&#39;s radius
+    var R = 6371;
+
+    // change these if using other coordinate objects
+    var lat1 = a.coords.latitude;
+    var lat2 = b.coords.latitude;
+    var lng1 = a.coords.longitude;
+    var lng2 = b.coords.longitude;
+
+    // trig calculations need to be done using radians rather than degrees
+    var dLat = (lat2 - lat1).toRad();
+    var dLng = (lng2 - lng1).toRad();
+
+    // main formula here
+    var a = Math.sin(dLat / 2) * Math.sin(dLat /2) +
+            Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d;
+}</code></pre>
+<h3>get bearing with start and end points</h3>
+<p>The bearing is important to know which direction you are heading in. Keep in
+mind that this function returns bearing in radians.</p>
+<pre><code class="language-javascript">// a and b are html5 geolocation coordinates
+// RETURN bearing in radians
+function getBearing(a, b){
+
+    // alter these if using other coordinate objects
+    var lat1 = a.coords.latitude.toRad();
+    var lat2 = b.coords.latitude.toRad();
+    var lng1 = a.coords.longitude.toRad();
+    var lng2 = b.coords.longitude.toRad();
+
+    // main formula
+    var y = Math.sin(lng2 - lng1) * Math.cos(lat2);
+    var x = Math.cos(lat1) * Math.sin(lat2) -
+            Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
+    var brng = Math.atan2(y, x);
+    return brng;
+}</code></pre>
+<h3>actual function to get distance to polyline</h3>
+<p>The function to get the perpendicular distance to polyline using the above
+functions.</p>
+<pre><code class="language-javascript">// RETURN distance in km
+function getTrackDist(a, b, curr){
+    var R = 6371;
+
+    // distance between current location and point a
+    dist13 = getPntDist(a, curr);
+
+    // bearing from a to current
+    brng13 = getBearing(a, curr);
+
+    // bearing from a to b
+    brng12 = getBearing(a, b);
+
+    // calculate distance
+    var crossDist = Math.asin(Math.sin(dist13 / R ) * Math.sin(brng13 - brng12)) * R;
+    return crossDist;
+}</code></pre>
+<p>With these simple functions, you can do many calculations needed for your web
+app.
+For all the algorithms you might need you can check:</p>
+<p><a href="http://www.movable-type.co.uk/scripts/latlong.html" target="_blank">movable-type</a></p>
+<p>You can use the example code, but I prefer
+to write my own using the formulas provided as reference.</p>
+</div></div></div><script>hljs.configure({tabReplace: '<span class="indent">\t</span>'})
+hljs.initHighlightingOnLoad();</script></body></html>

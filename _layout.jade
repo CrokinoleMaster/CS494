@@ -1,0 +1,46 @@
+doctype
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        title Web Maps How-To
+        link(rel='stylesheet', href='http://yui.yahooapis.com/pure/0.4.2/pure.css')
+        //if lte IE 8
+          link(rel='stylesheet', href='css/layouts/side-menu-old-ie.css')
+        //if gt IE 8
+        link(rel='stylesheet', href='/css/layouts/side-menu.css')
+        link(rel='stylesheet' href='http://yandex.st/highlightjs/8.0/styles/tomorrow-night.min.css')
+        link(rel='stylesheet' href='/css/main.css')
+        script(src='http://yandex.st/highlightjs/8.0/highlight.min.js')
+        //
+          <![endif]
+    body
+        #layout
+            a#menuLink.menu-link(href='#menu')
+                span
+            #menu
+                .pure-menu.pure-menu-open
+                    a.pure-menu-heading(href='#') CONTENT
+                    ul
+                        li(class="#{ current.source =='index' ? 'pure-menu-selected' : '' }")
+                            a(href='/index.html') Home
+                        li(class="#{ current.source =='algorithms' ? 'pure-menu-selected' : '' }")
+                            a(href='/pages/algorithms.html') algorithms
+                        li(class="#{ current.source =='current-position' ? 'pure-menu-selected' : '' }")
+                            a(href='/pages/current-position.html') current position
+                        li(class="#{ current.source =='track-distance' ? 'pure-menu-selected' : '' }")
+                            a(href='/pages/track-distance.html') track distance
+                        li(class="#{ current.source =='leaflet-legends' ? 'pure-menu-selected' : '' }")
+                            a(href='/pages/leaflet-legends.html') leaflet legends
+                        li(class="#{ current.source =='getting-started' ? 'pure-menu-selected' : '' }")
+                            a(href='/pages/getting-started.html') getting started
+                        li(class="#{ current.source =='libraries' ? 'pure-menu-selected' : '' }")
+                            a(href='/pages/libraries.html') libraries
+                        li(class="#{ current.source =='extra-credit' ? 'pure-menu-selected' : '' }")
+                            a(href='/pages/extra-credit.html') extra-credit
+            #main
+                .content
+                    != yield
+        script.
+            hljs.configure({tabReplace: '<span class="indent">\t</span>'})
+            hljs.initHighlightingOnLoad();
