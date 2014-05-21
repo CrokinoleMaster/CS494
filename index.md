@@ -10,6 +10,6 @@ some small libraries that can make working with Google Maps API easier.
 **This guide assumes you are familiar with HTML5 Geolocation, as well as the basics
 of Google Maps API**
 
-*If you are a beginner, click [here](/~wuhua/cs494/howto/pages/getting-started.html) to go to the getting started page.
+*If you are a beginner, click [here](/CS494/pages/getting-started.html) to go to the getting started page.
 
 **Everything on this site have been tested and works as they should**
