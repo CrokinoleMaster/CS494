@@ -62,15 +62,15 @@ Now let's setup our app. It will look something like this. Note that I will omit
         <!-- meta tags here -->
 
         <!-- here we add bootstrap, you may use a css framework like this if you like -->
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link href="href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
         <!-- here add css of plugins etc. We will add a datepicker that we got from github here just as an example -->
-        <link href="css/datapicker3.css">
+        <link rel="stylesheet" href="css/datapicker3.css">
 
         <!-- our own stylesheets -->
-        <!-- keep in mind that in HTML5, you don't need rel="stylesheet" -->
-        <link href="css/main.css">
+        <!-- keep in mind that in HTML5, you don't need type="text/css" -->
+        <link rel="stylesheet" href="css/main.css">
 
 
         <!-- some essential scripts, here we will add things like JQuery and bootstrap -->
